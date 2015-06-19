@@ -1,0 +1,58 @@
+<!-- k = 6 -->
+<!-- N = 10 -->
+<!-- I = 40 -->
+<!-- Fi = 6 -->
+<!-- frac_level = 0 -->
+<!-- ff = 1 -->
+<power_lib type="mux_based_switches">
+  
+  	<pb_power_lib>
+
+    		<pb_power name="io" power_method="ignore"/>			
+    		
+		<pb_power name="clb" power_method="sum_of_children">
+      			<pb_power name="ble" power_method="sum_of_children">
+        			<pb_power name="soft_logic" power_method="sum_of_children">
+          				<pb_power name="lut6" power_method="macro" num_input="6" num_output="1" conf_bits_num="64">
+              					<dynamic_power_avg at_freq="2e8">
+                					1.04e-5
+              					</dynamic_power_avg>
+	      					<static_power_avg>
+                					4.7e-7
+              				</static_power_avg>
+          				</pb_power>
+				</pb_power>
+        			<pb_power name="ff" power_method="macro" num_input="1" num_output="1" conf_bits_num="0">
+	  				<dynamic_power_avg at_freq="2e8">
+	    	  				7.4e-7
+					</dynamic_power_avg>
+					<static_power_avg>
+	    	  				8e-9
+					</static_power_avg>
+        			</pb_power>
+      			</pb_power>
+    		</pb_power>
+
+
+    		<pb_power name="mult_36" power_method="sum_of_children">
+      			<pb_power name="divisible_mult_18x18" power_method="sum_of_children">
+          			<pb_power name="mult_9x9_slice" power_method="ignore"/>
+          			<pb_power name="mult_18x18_slice" power_method="ignore"/>
+          			<pb_power name="mult_36x36_slice" power_method="ignore"/>
+      			</pb_power>
+		</pb_power>
+		
+
+		<pb_power name="memory" power_method="ignore"/>
+
+	</pb_power_lib>
+
+
+  	<general_power_lib Vdd="0.9">
+		<route_segment length="4" C_wire="9.7e-15"/>
+    		<mux_power at_freq="2e8" size="8" dynamic="4.18e-7" static="3.5e-8"/>
+		<buf_power at_freq="2e8" dynamic="2.3e-7" static="1.15e-8"/>
+    		<mem_power static="4.37e-9" write_energy="2.02e-14"/>
+  	</general_power_lib>
+
+</power_lib>
