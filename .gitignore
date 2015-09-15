@@ -74,3 +74,11 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Temp files
+temp/
+*.place
+*.out
+*.route
+*.net
+*.power
