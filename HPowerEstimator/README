@@ -1,0 +1,68 @@
+************************************************
+* Hierarchical FPGA Power Estimator            *
+************************************************
+
+This is Hierarchical FPGA Power Estimator, which provide extreme flexibility for
+users to define and calculation power consumption of any components defined in 
+a FPGA architecture. This tool is based on VPR 6.0.
+
+* Build HPowerEstimator
+
+	#:~/Downloads$ tar fvxz HPowerEstimator.tar.gz
+	#:~/Downloads$ mv HPowerEstimator /path/to/HPowerEstimator && cd /path/to/HPowerEstimator
+	#:/path/to/HPowerEstimator$ make
+
+For those who have installed VPR 6.0 before, no need for extra packages.
+For those who haven't, install the following packages:
+Ubuntu example
+	#:~$ sudo apt-get install ctags flex bison libx11-dev g++
+
+
+* Run HPowerEstimator
+
+We provide a convenient bash script to run all the blif benchmarks in the 
+vtr_flow/benchmarks/blif directory provided by VPR.
+
+	#:/path/to/HPowerEstimator$ ./power.sh
+
+For those who need to estimate power consumption of a custom blif benchmark, please
+follow the instructions:
+	
+Ubuntu example
+	#:/path/to/HPowerEstimator$ ace2/ace -b /path/to/blif_file -b /path/to/new/blif_file -o /path/to/activity_file
+	#:/path/to/HPowerEstimator$ vpr/vpr vpr/sample_arch.xml /path/to/new/blif_file -power --activity_file /path/to/activity_file --power_lib power_lib.xml
+
+Make sure your blif file is compatible with VPR itself. Power library will be discussed below.
+ 
+
+* How to use and define power library
+
+We provided a power library example which is compatible with the sample_arch.xml architecture in the vpr folder. 
+The basic principle of building your own power library is quite simple:
+	
+	#Every pb_type defined in the architecture should have a 
+         corresponding pb_power in the power library
+
+	#Power of the pb_type can be calculated in three ways: 
+		"sum_of_children"
+	 	"ignore"
+		"macro"
+
+	#For power_method="ignore", the children pb_types of the 
+	 corresponding pb_type don't need corresponding pb_power sections
+
+	#For power_method="sum_of_children", please specify the 
+	 corresponding pb_power sections for ALL children pb_types
+	 of ALL modes in the architecture file  
+
+	#For power_method="macro", please specify the "dynamic_power_constant" and
+	 "static_power_matrix" of this pb_type. "dynamic_power_constant" is the average
+	 power consumption of this pb_type at the frequency of "at_freq" with input nodes
+	 switching activity equals 100%, "static_power_matrix" is the power matrix for 
+	 different types of input vectors as the input of this pb_type. Currently we
+	 only support a constant(average) static power consumption value.
+	
+
+If you have questions or comments, please e-mail us at 
+LIANG,Hao:	hliangac@ust.hk
+CHEN,Yi-chung:	yic63@pitt.edu
